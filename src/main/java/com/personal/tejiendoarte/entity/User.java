@@ -4,6 +4,8 @@ import com.personal.tejiendoarte.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.util.Date;
+
 @Entity
 @Data
 @Table(name = "users")
@@ -17,7 +19,13 @@ public class User {
 
     private String password;
 
-    private String name;
+    private String first_name;
+
+    private String surname;
+
+    private String second_surname;
+
+    private Date birthdate;
 
     private UserRole role;
 
