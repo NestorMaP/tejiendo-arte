@@ -1,5 +1,6 @@
 package com.personal.tejiendoarte.entity;
 
+import com.personal.tejiendoarte.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.Data;
 
