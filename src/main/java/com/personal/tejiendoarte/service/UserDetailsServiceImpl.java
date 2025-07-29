@@ -1,4 +1,4 @@
-package com.personal.tejiendoarte.services;
+package com.personal.tejiendoarte.service;
 
 import com.personal.tejiendoarte.entity.User;
 import com.personal.tejiendoarte.repository.UserRepository;
