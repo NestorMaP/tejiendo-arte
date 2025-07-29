@@ -1,4 +1,4 @@
-package com.personal.tejiendoarte.utils;
+package com.personal.tejiendoarte.security;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;

@@ -1,4 +1,4 @@
-package com.personal.tejiendoarte.utils;
+package com.personal.tejiendoarte.security;
 
 import com.personal.tejiendoarte.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;

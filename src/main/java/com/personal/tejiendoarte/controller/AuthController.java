@@ -4,7 +4,7 @@ import com.personal.tejiendoarte.dto.AuthenticationRequestDto;
 import com.personal.tejiendoarte.entity.User;
 import com.personal.tejiendoarte.repository.UserRepository;
 import com.personal.tejiendoarte.service.UserDetailsServiceImpl;
-import com.personal.tejiendoarte.utils.JwtUtil;
+import com.personal.tejiendoarte.security.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONException;
