@@ -122,6 +122,14 @@
                 <scope>runtime</scope>
             </dependency>
 
+        <!-- Android Json -->
+        <dependency>
+            <groupId>com.vaadin.external.google</groupId>
+            <artifactId>android-json</artifactId>
+            <version>0.0.20131108.vaadin1</version>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
