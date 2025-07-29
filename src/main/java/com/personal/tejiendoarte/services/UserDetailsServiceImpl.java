@@ -1,4 +1,4 @@
-package com.personal.tejiendoarte.utils;
+package com.personal.tejiendoarte.services;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
