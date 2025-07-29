@@ -7,6 +7,8 @@ import com.personal.tejiendoarte.service.UserDetailsServiceImpl;
 import com.personal.tejiendoarte.utils.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.Optional;
 
 @RestController
@@ -29,9 +32,12 @@ public class AuthController {
 
     private final JwtUtil jwtUtil;
 
+    public static final String TOKEN_PREFIX = "Bearer ";
+    public static final String HEADER_STRING = "Authorization";
+
     @PostMapping("/authenticate")
     public void createAuthenticationToken(@RequestBody AuthenticationRequestDto authenticationRequest,
-                                          HttpServletResponse response) {
+                                          HttpServletResponse response) throws IOException, JSONException {
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
@@ -50,6 +56,8 @@ public class AuthController {
                     .put("role", optionalUser.get().getRole())
                     .toString()
             );
+
+            response.addHeader(HEADER_STRING, TOKEN_PREFIX + jwt);
         }
 
     }
