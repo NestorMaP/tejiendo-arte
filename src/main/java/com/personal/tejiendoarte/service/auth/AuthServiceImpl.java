@@ -5,6 +5,7 @@ import com.personal.tejiendoarte.dto.UserDto;
 import com.personal.tejiendoarte.entity.User;
 import com.personal.tejiendoarte.enums.UserRole;
 import com.personal.tejiendoarte.repository.UserRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,7 @@ public class AuthServiceImpl implements AuthService {
         return userRepository.findFirstByEmail(email).isPresent();
     }
 
+    @PostConstruct
     public void createAdminAccount() {
         User adminAccount = userRepository.findByRole(UserRole.ADMIN);
         if (adminAccount == null) {
