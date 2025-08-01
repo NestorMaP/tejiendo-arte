@@ -1,5 +1,8 @@
 package com.personal.tejiendoarte.service.auth;
 
+import com.personal.tejiendoarte.dto.SignupRequestDto;
+import com.personal.tejiendoarte.dto.UserDto;
+import com.personal.tejiendoarte.entity.User;
 import com.personal.tejiendoarte.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +20,12 @@ public class AuthServiceImpl implements AuthService {
 
 
     public UserDto createUser(SignupRequestDto signupRequestDto) {
+
+        User user = new User();
+
+        user.setEmail(signupRequestDto.getEmail());
+        user.setFirst_name(signupRequestDto.getName());
+        user.setPassword(bCryptPasswordEncoder.encode(signupRequestDto.getPassword()));
 
     }
 
