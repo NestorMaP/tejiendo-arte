@@ -1,6 +1,6 @@
 package com.personal.tejiendoarte.controller;
 
-import com.personal.tejiendoarte.dto.AuthenticationRequestDto;
+import com.personal.tejiendoarte.dto.AuthRequestDto;
 import com.personal.tejiendoarte.entity.User;
 import com.personal.tejiendoarte.repository.UserRepository;
 import com.personal.tejiendoarte.service.UserDetailsServiceImpl;
@@ -36,7 +36,7 @@ public class AuthController {
     public static final String HEADER_STRING = "Authorization";
 
     @PostMapping("/authenticate")
-    public void createAuthenticationToken(@RequestBody AuthenticationRequestDto authenticationRequest,
+    public void createAuthenticationToken(@RequestBody AuthRequestDto authenticationRequest,
                                           HttpServletResponse response) throws IOException, JSONException {
 
         try {
