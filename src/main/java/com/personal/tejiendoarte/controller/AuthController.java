@@ -1,14 +1,19 @@
 package com.personal.tejiendoarte.controller;
 
 import com.personal.tejiendoarte.dto.AuthRequestDto;
+import com.personal.tejiendoarte.dto.SignupRequestDto;
+import com.personal.tejiendoarte.dto.UserDto;
 import com.personal.tejiendoarte.entity.User;
 import com.personal.tejiendoarte.repository.UserRepository;
 import com.personal.tejiendoarte.service.UserDetailsServiceImpl;
 import com.personal.tejiendoarte.security.JwtUtil;
+import com.personal.tejiendoarte.service.auth.AuthServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -35,6 +40,8 @@ public class AuthController {
     public static final String TOKEN_PREFIX = "Bearer ";
     public static final String HEADER_STRING = "Authorization";
 
+    private final AuthServiceImpl authServiceImpl;
+
     @PostMapping("/authenticate")
     public void createAuthenticationToken(@RequestBody AuthRequestDto authenticationRequest,
                                           HttpServletResponse response) throws IOException, JSONException {
@@ -59,6 +66,18 @@ public class AuthController {
 
             response.addHeader(HEADER_STRING, TOKEN_PREFIX + jwt);
         }
+
+    }
+
+    @PostMapping("/sign-up")
+    public ResponseEntity<?> signupUser(@RequestBody SignupRequestDto signupRequestDto) {
+
+        if(authServiceImpl.hasUserWithEmail(signupRequestDto.getEmail())) {
+            return new ResponseEntity<>("User already exists", HttpStatus.UNAUTHORIZED);
+        }
+
+        UserDto userDto = authServiceImpl.createUser(signupRequestDto);
+        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
 
     }
 
