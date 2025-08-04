@@ -1,3 +1,4 @@
+/*
 package com.personal.tejiendoarte.security;
 
 import jakarta.servlet.*;
@@ -49,3 +50,4 @@ public class SimpleCorsFilter implements Filter {
     public void init(FilterConfig filterConfig) {}
 
 }
+ */
