@@ -69,7 +69,7 @@ public class AuthController {
 
     }
 
-    @PostMapping("/sign-up")
+    @PostMapping("/signup")
     public ResponseEntity<?> signupUser(@RequestBody SignupRequestDto signupRequestDto) {
 
         if(authServiceImpl.hasUserWithEmail(signupRequestDto.getEmail())) {
