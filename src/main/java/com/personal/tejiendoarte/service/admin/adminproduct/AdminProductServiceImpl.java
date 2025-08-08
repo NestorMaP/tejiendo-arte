@@ -10,6 +10,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -17,14 +19,16 @@ public class AdminProductServiceImpl implements AdminProductService {
 
     private final ProductRepository productRepository;
 
-    private final CategoryRepository categoryRepository;
-
     private final ProductMapper productMapper;
+
+    public List<ProductDto> getAllProducts() throws IOException {
+        List<Product> products = productRepository.findAll();
+        return products.stream().map(productMapper::mapToDto).collect(Collectors.toList());
+    }
 
     public ProductDto addProduct(ProductDto productDto) throws IOException {
 
         Product newProduct = productMapper.mapToEntity(productDto);
-
         return productMapper.mapToDto(productRepository.save(newProduct));
     }
 
