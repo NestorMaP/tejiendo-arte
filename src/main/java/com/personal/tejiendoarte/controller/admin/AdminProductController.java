@@ -17,12 +17,12 @@ public class AdminProductController {
 
     private final AdminProductService adminProductService;
 
-    @PostMapping("/product")
+    @GetMapping("/products")
     public ResponseEntity<List<ProductDto>> getAllProducts() throws IOException {
         return ResponseEntity.status(HttpStatus.OK).body(adminProductService.getAllProducts());
     }
 
-    @GetMapping("/products")
+    @PostMapping("/product")
     public ResponseEntity<ProductDto> addProduct(@ModelAttribute ProductDto requestProductDto) throws IOException {
         ProductDto responseProductDto = adminProductService.addProduct(requestProductDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseProductDto);
