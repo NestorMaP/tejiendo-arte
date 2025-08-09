@@ -17,7 +17,7 @@ public class AdminCategoryController {
 
     private final CategoryService categoryService;
 
-    @GetMapping("")
+    @GetMapping("categories")
     public ResponseEntity<List<Category>> getAllCategories() {
         return ResponseEntity.ok(categoryService.getAllCategories());
     }
