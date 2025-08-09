@@ -4,8 +4,6 @@ import com.personal.tejiendoarte.dto.ProductDto;
 import com.personal.tejiendoarte.entity.Category;
 import com.personal.tejiendoarte.entity.Product;
 import com.personal.tejiendoarte.repository.CategoryRepository;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +13,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class ProductMapper {
 
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     public ProductDto mapToDto(Product product) {
         ProductDto productDto = new ProductDto();
@@ -36,7 +34,8 @@ public class ProductMapper {
         product.setDescription(productDto.getDescription());
         product.setByteImage(productDto.getImage().getBytes());
 
-        Category category = categoryRepository.findById(productDto.getCategoryId()).orElseThrow();
+        Category category = categoryRepository.findById(productDto.getCategoryId())
+                .orElseThrow(() -> new IOException("Category not found"));
         product.setCategory(category);
 
         return product;
