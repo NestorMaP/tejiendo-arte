@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/admin")
@@ -35,12 +36,13 @@ public class AdminProductController {
 
     // TODO: Improve the following method
     @DeleteMapping("/product/{productId}")
-    public ResponseEntity<Void> deleteProduct(@PathVariable Long productId) {
+    public ResponseEntity<Map<String, String>> deleteProduct(@PathVariable Long productId) {
         boolean deleted = adminProductService.deleteProduct(productId);
         if(deleted) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Product deleted"));
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("message", "Product not found"));
 
     }
 }
