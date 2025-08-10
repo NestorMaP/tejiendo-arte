@@ -26,10 +26,17 @@ public class AdminProductServiceImpl implements AdminProductService {
         return products.stream().map(productMapper::mapToDto).collect(Collectors.toList());
     }
 
+    public List<ProductDto> getAllProductsByName(String productName) {
+        List<Product> products = productRepository.findAllByNameContaining(productName);
+        return products.stream().map(productMapper::mapToDto).collect(Collectors.toList());
+    }
+
     public ProductDto addProduct(ProductDto productDto) throws IOException {
 
         Product newProduct = productMapper.mapToEntity(productDto);
         return productMapper.mapToDto(productRepository.save(newProduct));
     }
+
+
 
 }
