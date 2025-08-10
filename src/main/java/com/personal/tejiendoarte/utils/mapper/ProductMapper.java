@@ -23,6 +23,7 @@ public class ProductMapper {
         productDto.setPrice(product.getPrice());
         productDto.setByteImage(product.getByteImage());
         productDto.setCategoryId(product.getCategory().getId());
+        productDto.setCategoryName(product.getCategory().getName());
 
         return productDto;
     };
