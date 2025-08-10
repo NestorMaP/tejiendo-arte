@@ -13,4 +13,6 @@ public interface AdminProductService {
 
     public ProductDto addProduct(ProductDto productDto) throws IOException;
 
+    public boolean deleteProduct(Long id);
+
 }
