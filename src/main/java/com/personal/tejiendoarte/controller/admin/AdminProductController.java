@@ -22,6 +22,11 @@ public class AdminProductController {
         return ResponseEntity.status(HttpStatus.OK).body(adminProductService.getAllProducts());
     }
 
+    @GetMapping("/search/{productName}")
+    public ResponseEntity<List<ProductDto>> getAllProductsByName(@PathVariable String productName) {
+        return ResponseEntity.status(HttpStatus.OK).body(adminProductService.getAllProductsByName(productName));
+    }
+
     @PostMapping("/product")
     public ResponseEntity<ProductDto> addProduct(@ModelAttribute ProductDto requestProductDto) throws IOException {
         ProductDto responseProductDto = adminProductService.addProduct(requestProductDto);
