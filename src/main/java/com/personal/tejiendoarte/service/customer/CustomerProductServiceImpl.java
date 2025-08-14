@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class CustomerProductServiceImpl {
+public class CustomerProductServiceImpl implements CustomerProductService {
 
     private final ProductRepository productRepository;
 
@@ -24,7 +24,7 @@ public class CustomerProductServiceImpl {
         return products.stream().map(productMapper::mapToDto).collect(Collectors.toList());
     }
 
-    public List<ProductDto> getAllProductsByName(String productName) {
+    public List<ProductDto> searchProductByTitle(String productName) {
         List<Product> products = productRepository.findAllByNameContaining(productName);
         return products.stream().map(productMapper::mapToDto).collect(Collectors.toList());
     }

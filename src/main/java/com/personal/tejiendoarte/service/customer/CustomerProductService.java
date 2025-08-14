@@ -9,5 +9,5 @@ public interface CustomerProductService {
 
     public List<ProductDto> getAllProducts() throws IOException;
 
-    public List<ProductDto> getAllProductsByName(String productName);
+    public List<ProductDto> searchProductByTitle(String productName);
 }
