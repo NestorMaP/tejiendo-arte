@@ -2,8 +2,11 @@ package com.personal.tejiendoarte.service.auth;
 
 import com.personal.tejiendoarte.dto.SignupRequestDto;
 import com.personal.tejiendoarte.dto.UserDto;
+import com.personal.tejiendoarte.entity.Order;
 import com.personal.tejiendoarte.entity.User;
+import com.personal.tejiendoarte.enums.OrderStatus;
 import com.personal.tejiendoarte.enums.UserRole;
+import com.personal.tejiendoarte.repository.OrderRepository;
 import com.personal.tejiendoarte.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,10 @@ public class AuthServiceImpl implements AuthService {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
+    @Autowired
+    private OrderRepository orderRepository;
+
+
     public UserDto createUser(SignupRequestDto signupRequestDto) {
 
         User user = new User();
@@ -31,6 +38,14 @@ public class AuthServiceImpl implements AuthService {
         user.setRole(UserRole.CUSTOMER);
 
         User createdUser = userRepository.save(user);
+
+        Order order = new Order();
+        order.setAmount(0L);
+        order.setAmount(0L);
+        order.setDiscount(0L);
+        order.setUser(createdUser);
+        order.setStatus(OrderStatus.PENDING);
+        orderRepository.save(order);
 
         UserDto userDto = new UserDto();
         userDto.setId(createdUser.getId());
