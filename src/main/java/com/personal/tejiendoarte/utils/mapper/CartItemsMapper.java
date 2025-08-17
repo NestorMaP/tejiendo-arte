@@ -2,9 +2,6 @@ package com.personal.tejiendoarte.utils.mapper;
 
 import com.personal.tejiendoarte.dto.CartItemsDto;
 import com.personal.tejiendoarte.entity.CartItems;
-import com.personal.tejiendoarte.repository.CategoryRepository;
-import com.personal.tejiendoarte.repository.ProductRepository;
-import com.personal.tejiendoarte.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
