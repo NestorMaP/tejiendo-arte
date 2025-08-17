@@ -19,4 +19,10 @@ public class CartItemsDto {
 
     private double lineTotalPrice;
 
+    private Long orderId;
+
+    private byte[] returnedImg;
+
+    private Long userId;
+
 }

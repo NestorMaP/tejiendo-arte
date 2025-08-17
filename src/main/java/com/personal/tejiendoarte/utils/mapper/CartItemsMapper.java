@@ -12,12 +12,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CartItemsMapper {
 
-    private final UserRepository userRepository;
-
-    private final ProductRepository productRepository;
-
-    private final CategoryRepository categoryRepository;
-
     public CartItemsDto mapToDto(CartItems cartItem) {
 
         return CartItemsDto.builder()
@@ -27,6 +21,9 @@ public class CartItemsMapper {
                 .unitPrice(cartItem.getPrice())
                 .quantity(cartItem.getQuantity())
                 .lineTotalPrice(cartItem.getPrice() * cartItem.getQuantity())
+                .orderId(cartItem.getOrder().getId())
+                .returnedImg(cartItem.getProduct().getByteImage())
+                .userId(cartItem.getUser().getId())
                 .build();
     }
 
