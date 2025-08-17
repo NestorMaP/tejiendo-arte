@@ -16,7 +16,7 @@ public class AdminCouponServiceImpl implements AdminCouponService {
 
     private final CouponMapper couponMapper;
 
-    public CouponDto createCoupon(Coupon coupon) throws ValidationException {
+    public CouponDto createCoupon(Coupon coupon) {
         if(couponRepository.existsByCode(coupon.getCode())) {
             throw new ValidationException("Coupon already exists");
         }
