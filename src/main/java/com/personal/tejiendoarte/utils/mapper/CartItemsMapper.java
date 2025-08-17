@@ -1,0 +1,33 @@
+package com.personal.tejiendoarte.utils.mapper;
+
+import com.personal.tejiendoarte.dto.CartItemsDto;
+import com.personal.tejiendoarte.entity.CartItems;
+import com.personal.tejiendoarte.repository.CategoryRepository;
+import com.personal.tejiendoarte.repository.ProductRepository;
+import com.personal.tejiendoarte.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+
+@Component
+@RequiredArgsConstructor
+public class CartItemsMapper {
+
+    private final UserRepository userRepository;
+
+    private final ProductRepository productRepository;
+
+    private final CategoryRepository categoryRepository;
+
+    public CartItemsDto mapToDto(CartItems cartItem) {
+
+        return CartItemsDto.builder()
+                .id(cartItem.getId())
+                .productId(cartItem.getProduct().getId())
+                .productName(cartItem.getProduct().getName())
+                .unitPrice(cartItem.getPrice())
+                .quantity(cartItem.getQuantity())
+                .lineTotalPrice(cartItem.getPrice() * cartItem.getQuantity())
+                .build();
+    }
+
+}

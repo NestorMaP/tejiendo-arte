@@ -1,5 +1,10 @@
 package com.personal.tejiendoarte.dto;
 
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@Builder
 public class CartItemsDto {
 
     private Long id;
