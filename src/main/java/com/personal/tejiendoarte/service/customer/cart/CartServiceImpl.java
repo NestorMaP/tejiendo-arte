@@ -2,6 +2,7 @@ package com.personal.tejiendoarte.service.customer.cart;
 
 import com.personal.tejiendoarte.dto.AddProductInCartDto;
 import com.personal.tejiendoarte.dto.CartItemsDto;
+import com.personal.tejiendoarte.dto.OrderDto;
 import com.personal.tejiendoarte.entity.CartItems;
 import com.personal.tejiendoarte.entity.Order;
 import com.personal.tejiendoarte.entity.Product;
@@ -12,6 +13,7 @@ import com.personal.tejiendoarte.repository.OrderRepository;
 import com.personal.tejiendoarte.repository.ProductRepository;
 import com.personal.tejiendoarte.repository.UserRepository;
 import com.personal.tejiendoarte.utils.mapper.CartItemsMapper;
+import com.personal.tejiendoarte.utils.mapper.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +36,9 @@ public class CartServiceImpl implements CartService {
 
     @Autowired
     private CartItemsMapper cartItemsMapper;
+
+    @Autowired
+    private OrderMapper orderMapper;
 
     public CartItemsDto addProductToCart(AddProductInCartDto addProductInCartDto) throws RuntimeException{
         Order currentOrder = orderRepository.findByUserIdAndStatus(addProductInCartDto.getUserId(), OrderStatus.PENDING);
@@ -75,6 +80,11 @@ public class CartServiceImpl implements CartService {
         currentOrder.getCartItems().add(cart);
 
         orderRepository.save(currentOrder);
+    }
+
+    public OrderDto getCartByUserId(Long userId) {
+
+        return orderMapper.mapToDto(orderRepository.findByUserIdAndStatus(userId, OrderStatus.PENDING));
     }
 
 }
