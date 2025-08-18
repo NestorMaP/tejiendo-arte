@@ -1,6 +1,8 @@
 package com.personal.tejiendoarte.controller.customer;
 
 import com.personal.tejiendoarte.dto.AddProductInCartDto;
+import com.personal.tejiendoarte.dto.OrderDto;
+import com.personal.tejiendoarte.exceptions.ValidationException;
 import com.personal.tejiendoarte.service.customer.cart.CartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -22,5 +24,15 @@ public class CartController {
     @PostMapping("/cart")
     public ResponseEntity<?> addProductToCart(@RequestBody AddProductInCartDto addProductInCartDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(cartService.addProductToCart(addProductInCartDto));
+    }
+
+    @GetMapping("/coupon/{userId}/{code}")
+    public ResponseEntity<?> applyCoupon(@PathVariable Long userId, @PathVariable String code) {
+        try {
+            OrderDto orderDto = cartService.applyCoupon(userId, code);
+            return ResponseEntity.status(HttpStatus.OK).body(orderDto);
+        } catch (ValidationException validationException) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(validationException.getMessage());
+        }
     }
 }
