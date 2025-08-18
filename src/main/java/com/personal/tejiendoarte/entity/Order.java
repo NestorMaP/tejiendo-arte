@@ -42,4 +42,8 @@ public class Order {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "order")
     private List<CartItems> cartItems;
 
+    @OneToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "coupon_id", referencedColumnName = "id")
+    private Coupon coupon;
+
 }

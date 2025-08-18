@@ -11,4 +11,6 @@ public interface CartService {
     public CartItemsDto addProductToCart(AddProductInCartDto addProductInCartDto);
 
     public OrderDto getCartByUserId(Long userId);
+
+    public OrderDto applyCoupon(Long userId, String code);
 }

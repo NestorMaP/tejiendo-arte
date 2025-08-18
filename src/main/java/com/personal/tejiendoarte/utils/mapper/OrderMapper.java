@@ -16,6 +16,8 @@ public class OrderMapper {
 
     public OrderDto mapToDto(Order order) {
 
+
+
         return OrderDto.builder()
                 .id(order.getId())
                 .description(order.getDescription())
@@ -28,7 +30,10 @@ public class OrderMapper {
                 .discount(order.getDiscount())
                 .trackingId(order.getTrackingId())
                 .userName(order.getUser().getFirst_name())
-                .cartItems(order.getCartItems().stream().map(cartItemsMapper::mapToDto).collect(Collectors.toList()))
+                .cartItems(order.getCartItems().stream()
+                        .map(cartItemsMapper::mapToDto)
+                        .collect(Collectors.toList()))
+                .couponName(order.getCoupon() != null ? order.getCoupon().getName() : null)
                 .build();
 
     }
