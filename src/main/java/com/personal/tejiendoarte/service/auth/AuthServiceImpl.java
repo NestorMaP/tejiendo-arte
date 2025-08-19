@@ -8,6 +8,7 @@ import com.personal.tejiendoarte.enums.OrderStatus;
 import com.personal.tejiendoarte.enums.UserRole;
 import com.personal.tejiendoarte.repository.OrderRepository;
 import com.personal.tejiendoarte.repository.UserRepository;
+import com.personal.tejiendoarte.service.customer.cart.CartService;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,6 +28,9 @@ public class AuthServiceImpl implements AuthService {
     @Autowired
     private OrderRepository orderRepository;
 
+    @Autowired
+    private CartService cartService;
+
 
     public UserDto createUser(SignupRequestDto signupRequestDto) {
 
@@ -39,13 +43,7 @@ public class AuthServiceImpl implements AuthService {
 
         User createdUser = userRepository.save(user);
 
-        Order order = new Order();
-        order.setAmount(0L);
-        order.setTotalAmount(0L);
-        order.setDiscount(0L);
-        order.setUser(createdUser);
-        order.setStatus(OrderStatus.PENDING);
-        orderRepository.save(order);
+        cartService.createNewCart(createdUser);
 
         UserDto userDto = new UserDto();
         userDto.setId(createdUser.getId());
