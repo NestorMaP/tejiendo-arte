@@ -172,7 +172,7 @@ public class CartServiceImpl implements CartService {
 
         createNewCart(optionalUser.get());
 
-        return orderMapper.mapToDto(orderRepository.save(currentOrder));
+        return orderMapper.mapToDto(currentOrder);
     }
 
     private void updatePlacedOrder(Order currentOrder, PlaceOrderDto placeOrderDto) {
@@ -181,7 +181,7 @@ public class CartServiceImpl implements CartService {
         currentOrder.setDate(new Date());
         currentOrder.setStatus(OrderStatus.PLACED);
 
-        orderRepository.save(currentOrder);
+        orderRepository.saveAndFlush(currentOrder);
     }
 
     public void createNewCart(User currentUser) {
