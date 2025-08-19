@@ -3,6 +3,7 @@ package com.personal.tejiendoarte.service.customer.cart;
 import com.personal.tejiendoarte.dto.AddProductInCartDto;
 import com.personal.tejiendoarte.dto.CartItemsDto;
 import com.personal.tejiendoarte.dto.OrderDto;
+import com.personal.tejiendoarte.dto.PlaceOrderDto;
 import com.personal.tejiendoarte.entity.*;
 import com.personal.tejiendoarte.enums.OrderStatus;
 import com.personal.tejiendoarte.exceptions.ValidationException;
@@ -117,25 +118,25 @@ public class CartServiceImpl implements CartService {
                     addProductInCartDto.getUserId(), OrderStatus.PENDING));
         }
 
-        Order order = orderRepository.findByUserIdAndStatus(addProductInCartDto.getUserId(), OrderStatus.PENDING);
+        Order currentOrder = orderRepository.findByUserIdAndStatus(addProductInCartDto.getUserId(), OrderStatus.PENDING);
 
         CartItems cartItem = cartItemsRepository.findByProductIdAndOrderIdAndUserId(
-                addProductInCartDto.getProductId(), order.getId(), addProductInCartDto.getUserId())
+                addProductInCartDto.getProductId(), currentOrder.getId(), addProductInCartDto.getUserId())
                 .orElseThrow(() -> new ValidationException("Product not found."));
 
         long newQuantity = cartItem.getQuantity() + delta;
 
         if (newQuantity <= 0) {
             cartItemsRepository.delete(cartItem);
-            order.getCartItems().removeIf(itemInCart -> itemInCart.getId().equals(cartItem.getId()));
+            currentOrder.getCartItems().removeIf(itemInCart -> itemInCart.getId().equals(cartItem.getId()));
         } else {
             cartItem.setQuantity(newQuantity);
             cartItemsRepository.save(cartItem);
         }
 
-        recomputeTotals(order);
+        recomputeTotals(currentOrder);
 
-        return orderMapper.mapToDto(orderRepository.save(order));
+        return orderMapper.mapToDto(orderRepository.save(currentOrder));
 
     }
 
@@ -157,6 +158,41 @@ public class CartServiceImpl implements CartService {
             order.setDiscount(0L);
             order.setAmount(total);
         }
-     }
+    }
+
+    public OrderDto placeOrder(PlaceOrderDto placeOrderDto) {
+        Order currentOrder = orderRepository.findByUserIdAndStatus(placeOrderDto.getUserId(), OrderStatus.PENDING);
+        Optional<User> optionalUser = userRepository.findById(placeOrderDto.getUserId());
+
+        if (optionalUser.isEmpty()) {
+            return null;
+        }
+
+        updatePlacedOrder(currentOrder, placeOrderDto);
+
+        createNewCart(optionalUser.get());
+
+        return orderMapper.mapToDto(orderRepository.save(currentOrder));
+    }
+
+    private void updatePlacedOrder(Order currentOrder, PlaceOrderDto placeOrderDto) {
+        currentOrder.setDescription(placeOrderDto.getOrderDescription());
+        currentOrder.setAddress(placeOrderDto.getAddress());
+        currentOrder.setDate(new Date());
+        currentOrder.setStatus(OrderStatus.PLACED);
+
+        orderRepository.save(currentOrder);
+    }
+
+    public void createNewCart(User currentUser) {
+        Order order = new Order();
+        order.setAmount(0L);
+        order.setTotalAmount(0L);
+        order.setDiscount(0L);
+        order.setUser(currentUser);
+        order.setStatus(OrderStatus.PENDING);
+
+        orderRepository.save(order);
+    }
 
 }
