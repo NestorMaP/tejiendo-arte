@@ -111,37 +111,6 @@ public class CartServiceImpl implements CartService {
         return couponExpirationDate != null && currentDate.after(couponExpirationDate);
     }
 
-    public OrderDto increaseProductQuantity(AddProductInCartDto addProductInCartDto) {
-        int addedQuantity = 1;
-        Order currentOrder = orderRepository.findByUserIdAndStatus(addProductInCartDto.getUserId(), OrderStatus.PENDING);
-        Optional<Product> optionalProduct = productRepository.findById(addProductInCartDto.getProductId());
-
-        Optional<CartItems> optionalCartItems = cartItemsRepository.findByProductIdAndOrderIdAndUserId(
-                addProductInCartDto.getProductId(), currentOrder.getId(), addProductInCartDto.getUserId());
-
-        if (optionalProduct.isEmpty() || optionalCartItems.isEmpty()){ return null; }
-
-        CartItems cartItems = optionalCartItems.get();
-        Product product = optionalProduct.get();
-
-        currentOrder.setAmount(currentOrder.getAmount() + product.getPrice());
-        currentOrder.setTotalAmount(currentOrder.getTotalAmount() + product.getPrice());
-
-        cartItems.setQuantity(cartItems.getQuantity() + addedQuantity);
-
-        if(currentOrder.getCoupon() != null){
-            double discountAmount = ((currentOrder.getCoupon().getDiscount() / 100.0) * currentOrder.getTotalAmount());
-            double netAmount = currentOrder.getAmount() - discountAmount;
-
-            currentOrder.setAmount((long)netAmount);
-            currentOrder.setDiscount((long)discountAmount);
-        }
-
-        cartItemsRepository.save(cartItems);
-        orderRepository.save(currentOrder);
-        return orderMapper.mapToDto(currentOrder);
-    }
-
     public OrderDto changeProductQuantity(AddProductInCartDto addProductInCartDto, int delta) {
         if (delta == 0) {
             return orderMapper.mapToDto(orderRepository.findByUserIdAndStatus(
@@ -149,8 +118,6 @@ public class CartServiceImpl implements CartService {
         }
 
         Order order = orderRepository.findByUserIdAndStatus(addProductInCartDto.getUserId(), OrderStatus.PENDING);
-        Product product = productRepository.findById(addProductInCartDto.getProductId())
-                .orElseThrow(() -> new ValidationException("Product not found."));
 
         CartItems cartItem = cartItemsRepository.findByProductIdAndOrderIdAndUserId(
                 addProductInCartDto.getProductId(), order.getId(), addProductInCartDto.getUserId())
