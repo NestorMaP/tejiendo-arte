@@ -142,4 +142,54 @@ public class CartServiceImpl implements CartService {
         return orderMapper.mapToDto(currentOrder);
     }
 
+    public OrderDto changeProductQuantity(AddProductInCartDto addProductInCartDto, int delta) {
+        if (delta == 0) {
+            return orderMapper.mapToDto(orderRepository.findByUserIdAndStatus(
+                    addProductInCartDto.getUserId(), OrderStatus.PENDING));
+        }
+
+        Order order = orderRepository.findByUserIdAndStatus(addProductInCartDto.getUserId(), OrderStatus.PENDING);
+        Product product = productRepository.findById(addProductInCartDto.getProductId())
+                .orElseThrow(() -> new ValidationException("Product not found."));
+
+        CartItems cartItem = cartItemsRepository.findByProductIdAndOrderIdAndUserId(
+                addProductInCartDto.getProductId(), order.getId(), addProductInCartDto.getUserId())
+                .orElseThrow(() -> new ValidationException("Product not found."));
+
+        long newQuantity = cartItem.getQuantity() + delta;
+
+        if (newQuantity <= 0) {
+            cartItemsRepository.delete(cartItem);
+            order.getCartItems().removeIf(itemInCart -> itemInCart.getId().equals(cartItem.getId()));
+        } else {
+            cartItem.setQuantity(newQuantity);
+            cartItemsRepository.save(cartItem);
+        }
+
+        recomputeTotals(order);
+
+        return orderMapper.mapToDto(orderRepository.save(order));
+
+    }
+
+    private void recomputeTotals(Order order) {
+        long total = order.getCartItems().stream()
+                .mapToLong(itemInCart -> (long) itemInCart.getQuantity() * itemInCart.getProduct().getPrice())
+                .sum();
+
+        order.setTotalAmount(total);
+
+        if (order.getCoupon() != null) {
+            long couponDiscount = order.getCoupon().getDiscount();
+            long discountAmount = Math.round(total * (couponDiscount / 100.0));
+            long finalAmount = total - discountAmount;
+
+            order.setDiscount(discountAmount);
+            order.setAmount(finalAmount);
+        } else {
+            order.setDiscount(0L);
+            order.setAmount(total);
+        }
+     }
+
 }
