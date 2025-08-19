@@ -27,7 +27,7 @@ public class CartController {
         return ResponseEntity.status(HttpStatus.CREATED).body(cartService.addProductToCart(addProductInCartDto));
     }
 
-    @GetMapping("/coupon/{userId}/{code}")
+    @GetMapping("/cart/coupon/{userId}/{code}")
     public ResponseEntity<?> applyCoupon(@PathVariable Long userId, @PathVariable String code) {
         try {
             OrderDto orderDto = cartService.applyCoupon(userId, code);
