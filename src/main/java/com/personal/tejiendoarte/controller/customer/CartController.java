@@ -2,6 +2,7 @@ package com.personal.tejiendoarte.controller.customer;
 
 import com.personal.tejiendoarte.dto.AddProductInCartDto;
 import com.personal.tejiendoarte.dto.OrderDto;
+import com.personal.tejiendoarte.dto.PlaceOrderDto;
 import com.personal.tejiendoarte.exceptions.ValidationException;
 import com.personal.tejiendoarte.service.customer.cart.CartService;
 import lombok.RequiredArgsConstructor;
@@ -41,5 +42,10 @@ public class CartController {
             @RequestBody AddProductInCartDto addProductInCartDto) {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(cartService.changeProductQuantity(addProductInCartDto, addProductInCartDto.getDelta()));
+    }
+
+    @PostMapping("/cart/placeOrder")
+    public ResponseEntity<OrderDto> placeOrder(@RequestBody PlaceOrderDto placeOrderDto) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(cartService.placeOrder(placeOrderDto));
     }
 }
