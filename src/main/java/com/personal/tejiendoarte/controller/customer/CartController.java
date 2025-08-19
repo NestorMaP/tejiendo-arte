@@ -44,7 +44,7 @@ public class CartController {
                 .body(cartService.changeProductQuantity(addProductInCartDto, addProductInCartDto.getDelta()));
     }
 
-    @PostMapping("/cart/placeOrder")
+    @PostMapping("/cart/place-order")
     public ResponseEntity<OrderDto> placeOrder(@RequestBody PlaceOrderDto placeOrderDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(cartService.placeOrder(placeOrderDto));
     }
