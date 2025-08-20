@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class FAQMapper {
 
-    private FAQDto mapToDto(FAQ faq) {
+    public FAQDto mapToDto(FAQ faq) {
         return FAQDto.builder()
                 .id(faq.getId())
                 .question(faq.getQuestion())

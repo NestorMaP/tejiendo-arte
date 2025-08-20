@@ -5,6 +5,7 @@ import com.personal.tejiendoarte.entity.FAQ;
 import com.personal.tejiendoarte.entity.Product;
 import com.personal.tejiendoarte.repository.FAQRepository;
 import com.personal.tejiendoarte.repository.ProductRepository;
+import com.personal.tejiendoarte.utils.mapper.FAQMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,8 @@ public class FAQServiceImpl implements FAQService {
 
     private final ProductRepository productRepository;
 
+    private final FAQMapper faqMapper;
+
     public FAQDto postFAQ(Long productId, FAQDto faqDto) {
         Optional<Product> optionalProduct = productRepository.findById(productId);
 
@@ -25,6 +28,11 @@ public class FAQServiceImpl implements FAQService {
 
         FAQ faq = new FAQ();
 
+        faq.setQuestion(faqDto.getQuestion());
+        faq.setAnswer(faqDto.getAnswer());
+        faq.setProduct(optionalProduct.get());
+
+        return faqMapper.mapToDto(faqRepository.save(faq));
 
     }
 
