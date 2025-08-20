@@ -59,4 +59,13 @@ public class AdminProductController {
     public ResponseEntity<ProductDto> getProductById(@PathVariable Long productId) {
         return ResponseEntity.status(HttpStatus.OK).body(adminProductService.getProductById(productId));
     }
+
+    @PutMapping("/product/{productId}")
+    public ResponseEntity<ProductDto> updateProduct(
+            @PathVariable Long productId,
+            @ModelAttribute ProductDto productDto)
+            throws IOException
+    {
+        return ResponseEntity.status(HttpStatus.OK).body(adminProductService.updateProduct(productId, productDto));
+    }
 }
