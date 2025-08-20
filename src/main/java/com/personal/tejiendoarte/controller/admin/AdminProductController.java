@@ -1,7 +1,9 @@
 package com.personal.tejiendoarte.controller.admin;
 
+import com.personal.tejiendoarte.dto.FAQDto;
 import com.personal.tejiendoarte.dto.ProductDto;
 import com.personal.tejiendoarte.service.admin.adminproduct.AdminProductService;
+import com.personal.tejiendoarte.service.admin.faq.FAQService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,8 @@ import java.util.Map;
 public class AdminProductController {
 
     private final AdminProductService adminProductService;
+
+    private final FAQService faqService;
 
     @GetMapping("/products")
     public ResponseEntity<List<ProductDto>> getAllProducts() throws IOException {
@@ -44,5 +48,10 @@ public class AdminProductController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Map.of("message", "Product not found"));
 
+    }
+
+    @PostMapping("/faq/{productId}")
+    public ResponseEntity<FAQDto> postFAQ(@PathVariable Long productId, @RequestBody FAQDto faqDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(faqService.postFAQ(productId, faqDto));
     }
 }
