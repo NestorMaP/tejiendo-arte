@@ -8,4 +8,6 @@ public interface AdminOrderService {
 
     public List<OrderDto> getAllOrders();
 
+    public OrderDto changeOrderStatus(Long orderId, String status);
+
 }
