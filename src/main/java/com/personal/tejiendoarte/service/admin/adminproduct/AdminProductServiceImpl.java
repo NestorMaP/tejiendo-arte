@@ -49,6 +49,10 @@ public class AdminProductServiceImpl implements AdminProductService {
         return false;
     }
 
+    public ProductDto getProductById(Long id) {
+        Optional<Product> optionalProduct = productRepository.findById(id);
+        return optionalProduct.map(productMapper::mapToDto).orElse(null);
 
+    }
 
 }

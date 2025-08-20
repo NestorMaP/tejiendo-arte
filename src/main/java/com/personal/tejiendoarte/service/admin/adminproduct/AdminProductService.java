@@ -15,4 +15,6 @@ public interface AdminProductService {
 
     public boolean deleteProduct(Long id);
 
+    public ProductDto getProductById(Long id);
+
 }
