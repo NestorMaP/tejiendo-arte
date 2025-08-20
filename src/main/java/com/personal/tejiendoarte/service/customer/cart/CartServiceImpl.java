@@ -14,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -196,6 +198,12 @@ public class CartServiceImpl implements CartService {
         order.setStatus(OrderStatus.PENDING);
 
         orderRepository.save(order);
+    }
+
+    public List<OrderDto> getUserPlacedOrders (Long userId) {
+        return orderRepository.findAllByUserIdAndStatusIn(userId,
+                List.of(OrderStatus.PLACED, OrderStatus.SHIPPED, OrderStatus.DELIVERED)).stream()
+                .map(order -> orderMapper.mapToDto(order)).collect(Collectors.toList());
     }
 
 }

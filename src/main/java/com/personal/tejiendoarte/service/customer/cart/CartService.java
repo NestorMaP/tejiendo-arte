@@ -6,6 +6,8 @@ import com.personal.tejiendoarte.dto.OrderDto;
 import com.personal.tejiendoarte.dto.PlaceOrderDto;
 import com.personal.tejiendoarte.entity.User;
 
+import java.util.List;
+
 public interface CartService {
     public CartItemsDto addProductToCart(AddProductInCartDto addProductInCartDto);
 
@@ -18,4 +20,6 @@ public interface CartService {
     public OrderDto placeOrder(PlaceOrderDto placeOrderDto);
 
     public void createNewCart(User currentUser);
+
+    public List<OrderDto> getUserPlacedOrders (Long userId);
 }
