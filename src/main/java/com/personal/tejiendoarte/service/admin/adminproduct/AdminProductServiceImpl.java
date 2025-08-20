@@ -3,6 +3,7 @@ package com.personal.tejiendoarte.service.admin.adminproduct;
 import com.personal.tejiendoarte.dto.ProductDto;
 import com.personal.tejiendoarte.entity.Category;
 import com.personal.tejiendoarte.entity.Product;
+import com.personal.tejiendoarte.repository.CategoryRepository;
 import com.personal.tejiendoarte.repository.ProductRepository;
 import com.personal.tejiendoarte.utils.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
