@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class CartServiceImpl implements CartService {
@@ -180,6 +181,8 @@ public class CartServiceImpl implements CartService {
         currentOrder.setAddress(placeOrderDto.getAddress());
         currentOrder.setDate(new Date());
         currentOrder.setStatus(OrderStatus.PLACED);
+
+        if (currentOrder.getTrackingId() == null ) currentOrder.setTrackingId(UUID.randomUUID());
 
         orderRepository.saveAndFlush(currentOrder);
     }

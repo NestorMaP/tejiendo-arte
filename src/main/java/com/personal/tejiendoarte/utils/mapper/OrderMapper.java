@@ -16,8 +16,6 @@ public class OrderMapper {
 
     public OrderDto mapToDto(Order order) {
 
-
-
         return OrderDto.builder()
                 .id(order.getId())
                 .description(order.getDescription())
