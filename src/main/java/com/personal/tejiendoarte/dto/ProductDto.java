@@ -12,6 +12,8 @@ public class ProductDto {
 
     private Long price;
 
+    private Long quantity;
+
     private String description;
 
     private byte[] byteImage;
