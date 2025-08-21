@@ -8,6 +8,7 @@ import com.personal.tejiendoarte.entity.Product;
 import com.personal.tejiendoarte.entity.User;
 import com.personal.tejiendoarte.repository.OrderRepository;
 import com.personal.tejiendoarte.repository.ProductRepository;
+import com.personal.tejiendoarte.repository.ReviewRepository;
 import com.personal.tejiendoarte.repository.UserRepository;
 import com.personal.tejiendoarte.utils.mapper.ProductMapper;
 import com.personal.tejiendoarte.utils.mapper.ReviewMapper;
@@ -49,6 +50,6 @@ public class ReviewServiceImpl implements ReviewService {
 
     public ReviewDto giveReview(ReviewDto reviewDto) throws IOException {
 
-        return reviewRepository.save(reviewMapper.mapToEntity(reviewDto));
+        return reviewMapper.mapToDto(reviewRepository.save(reviewMapper.mapToEntity(reviewDto)));
     }
 }
