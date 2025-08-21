@@ -10,11 +10,13 @@ import com.personal.tejiendoarte.repository.OrderRepository;
 import com.personal.tejiendoarte.repository.ProductRepository;
 import com.personal.tejiendoarte.repository.UserRepository;
 import com.personal.tejiendoarte.utils.mapper.ProductMapper;
+import com.personal.tejiendoarte.utils.mapper.ReviewMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -22,8 +24,6 @@ import java.util.List;
 public class ReviewServiceImpl implements ReviewService {
 
     private final OrderRepository orderRepository;
-    private final ProductRepository productRepository;
-    private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
 
     private final ProductMapper productMapper;
@@ -47,15 +47,7 @@ public class ReviewServiceImpl implements ReviewService {
                 .build();
     }
 
-    public ReviewDto giveReview(ReviewDto reviewDto) {
-        Product product = productRepository.findById(reviewDto.getProductId())
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Product " + reviewDto.getProductId() + " not Found")
-                );
-        User user = userRepository.findById(reviewDto.getUserId())
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "User " + reviewDto.getUserId() + " not Found")
-                );
+    public ReviewDto giveReview(ReviewDto reviewDto) throws IOException {
 
         return reviewRepository.save(reviewMapper.mapToEntity(reviewDto));
     }
