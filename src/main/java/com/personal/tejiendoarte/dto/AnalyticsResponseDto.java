@@ -1,0 +1,26 @@
+package com.personal.tejiendoarte.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+
+@Data
+@AllArgsConstructor
+@Builder
+public class AnalyticsResponseDto {
+
+    private Long placed;
+
+    private Long shipped;
+
+    private Long delivered;
+
+    private Long currentMonthOrders;
+
+    private Long previousMonthOrders;
+
+    private Long currentMonthEarning;
+
+    private Long previousMonthEarning;
+
+}
