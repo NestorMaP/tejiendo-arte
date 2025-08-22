@@ -12,7 +12,9 @@ import com.personal.tejiendoarte.utils.mapper.CartItemsMapper;
 import com.personal.tejiendoarte.utils.mapper.OrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -206,8 +208,9 @@ public class CartServiceImpl implements CartService {
                 .map(order -> orderMapper.mapToDto(order)).collect(Collectors.toList());
     }
 
-    public OrderDto searchOrderByTrackingId(UUID trackingId) {
-        return orderRepository
+    public OrderDto searchOrderByTrackingId(UUID trackingId) throws IOException {
+        return orderMapper.mapToDto(orderRepository.findByTrackingId(trackingId)
+                .orElseThrow(() -> new IOException("Order Not Found")));
     }
 
 }

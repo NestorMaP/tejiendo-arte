@@ -6,7 +6,9 @@ import com.personal.tejiendoarte.dto.OrderDto;
 import com.personal.tejiendoarte.dto.PlaceOrderDto;
 import com.personal.tejiendoarte.entity.User;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 public interface CartService {
     public CartItemsDto addProductToCart(AddProductInCartDto addProductInCartDto);
@@ -22,4 +24,6 @@ public interface CartService {
     public void createNewCart(User currentUser);
 
     public List<OrderDto> getUserPlacedOrders (Long userId);
+
+    public OrderDto searchOrderByTrackingId(UUID trackingId) throws IOException;
 }
