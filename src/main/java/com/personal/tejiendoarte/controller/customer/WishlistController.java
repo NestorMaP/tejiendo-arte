@@ -5,12 +5,10 @@ import com.personal.tejiendoarte.service.customer.wishlist.WishlistService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -18,6 +16,11 @@ import java.io.IOException;
 public class WishlistController {
 
     private final WishlistService wishlistService;
+
+    @GetMapping("/wishlist/{userId}")
+    public ResponseEntity<List<WishlistDto>> getWishlistByUserId(@PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(wishlistService.getWishlistByUserId(userId));
+    }
 
     @PostMapping("/wishlist")
     public ResponseEntity<?> addProductToWishlist(@RequestBody WishlistDto wishlistDto) {
