@@ -22,4 +22,6 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> findByTrackingId(UUID trackingId);
 
     List<Order> findByDateBetweenAndStatus(Date startOfMonth, Date endOfMonth, OrderStatus status);
+
+    Long countByStatus(OrderStatus status);
 }

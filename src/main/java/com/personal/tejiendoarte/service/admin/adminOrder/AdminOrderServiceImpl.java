@@ -14,6 +14,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,9 +55,49 @@ public class AdminOrderServiceImpl implements AdminOrderService {
         LocalDate previousMonthDate = currentDate.minusMonths(1);
 
         Long currentMonthOrders = getTotalOrdersForMonth(currentDate.getMonthValue(), currentDate.getYear());
+        Long previousMonthOrders = getTotalOrdersForMonth(previousMonthDate.getMonthValue(), previousMonthDate.getYear());
+
+        Long currentMonthEarnings = getTotalEarningsForMonth(currentDate.getMonthValue(), currentDate.getYear());
+        Long previousMonthEarnings = getTotalEarningsForMonth(previousMonthDate.getMonthValue(), previousMonthDate.getYear());
+
+        Long placed = orderRepository.countByStatus(OrderStatus.PLACED);
+        Long shipped = orderRepository.countByStatus(OrderStatus.SHIPPED);
+        Long delivered = orderRepository.countByStatus(OrderStatus.DELIVERED);
+
+        return AnalyticsResponseDto.builder()
+                .placed(placed)
+                .shipped(shipped)
+                .delivered(delivered)
+                .currentMonthOrders(currentMonthOrders)
+                .previousMonthOrders(previousMonthOrders)
+                .currentMonthEarning(currentMonthEarnings)
+                .previousMonthEarning(previousMonthEarnings)
+                .build();
     }
 
     private Long getTotalOrdersForMonth(int month, int year) {
+        Date startOfMonth = getStartOfMonth(month, year);
+        Date endOfMonth = getEndOfMonth(month, year);
+
+        List<Order> orders = orderRepository.findByDateBetweenAndStatus(startOfMonth, endOfMonth, OrderStatus.DELIVERED);
+
+        return (long) orders.size();
+    }
+
+    private Long getTotalEarningsForMonth(int month, int year) {
+        Date startOfMonth = getStartOfMonth(month, year);
+        Date endOfMonth = getEndOfMonth(month, year);
+
+        List<Order> orders = orderRepository.findByDateBetweenAndStatus(startOfMonth, endOfMonth, OrderStatus.DELIVERED);
+
+        AtomicReference<Long> sum = new AtomicReference<>(0L);
+        orders.forEach(order -> {
+            sum.updateAndGet(v -> v + order.getAmount());
+        });
+        return sum.get();
+    }
+
+    private Date getStartOfMonth(int month, int year) {
         Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.YEAR, year);
         calendar.set(Calendar.MONTH, month - 1);
@@ -64,18 +105,17 @@ public class AdminOrderServiceImpl implements AdminOrderService {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
 
-        Date startOfMonth = calendar.getTime();
+        return calendar.getTime();
+    }
 
+    private Date getEndOfMonth(int month, int year) {
+        Calendar calendar = Calendar.getInstance();
         calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
         calendar.set(Calendar.HOUR_OF_DAY, 23);
         calendar.set(Calendar.MINUTE, 59);
         calendar.set(Calendar.SECOND, 59);
 
-        Date endOfMonth = calendar.getTime();
-
-        List<Order> orders = orderRepository.findByDateBetweenAndStatus(startOfMonth, endOfMonth, OrderStatus.DELIVERED);
-
-        return (long) orders.size();
+        return calendar.getTime();
     }
 
 
