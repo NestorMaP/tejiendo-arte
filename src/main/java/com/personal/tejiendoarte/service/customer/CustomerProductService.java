@@ -1,5 +1,6 @@
 package com.personal.tejiendoarte.service.customer;
 
+import com.personal.tejiendoarte.dto.ProductDetailDto;
 import com.personal.tejiendoarte.dto.ProductDto;
 
 import java.io.IOException;
@@ -10,4 +11,6 @@ public interface CustomerProductService {
     public List<ProductDto> getAllProducts() throws IOException;
 
     public List<ProductDto> searchProductByTitle(String productName);
+
+    public ProductDetailDto getProductDetailById(Long productId);
 }
