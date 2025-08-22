@@ -206,4 +206,8 @@ public class CartServiceImpl implements CartService {
                 .map(order -> orderMapper.mapToDto(order)).collect(Collectors.toList());
     }
 
+    public OrderDto searchOrderByTrackingId(UUID trackingId) {
+        return orderRepository
+    }
+
 }
