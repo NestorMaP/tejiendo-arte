@@ -1,5 +1,6 @@
 package com.personal.tejiendoarte.controller.admin;
 
+import com.personal.tejiendoarte.dto.AnalyticsResponseDto;
 import com.personal.tejiendoarte.dto.OrderDto;
 import com.personal.tejiendoarte.service.admin.adminOrder.AdminOrderService;
 import lombok.RequiredArgsConstructor;
@@ -32,4 +33,8 @@ public class AdminOrderController {
         return ResponseEntity.status(HttpStatus.OK).body(orderDto);
     }
 
+    @GetMapping("/order/analytics")
+    public ResponseEntity<AnalyticsResponseDto> getAnalytics() {
+        return ResponseEntity.status(HttpStatus.OK).body(adminOrderService.calculateAnalytics());
+    }
 }
