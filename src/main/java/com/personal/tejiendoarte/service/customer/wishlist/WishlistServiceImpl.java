@@ -16,6 +16,7 @@ public class WishlistServiceImpl implements WishlistService {
 
     private final WishlistRepository wishlistRepository;
 
+    //TODO: Check as it can register the same product for the same user more than once
     public WishlistDto addProductToWishlist(WishlistDto wishlistDto) throws IOException {
         return wishlistMapper.mapToDto(wishlistRepository.save(wishlistMapper.mapToEntity(wishlistDto)));
     }
