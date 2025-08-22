@@ -1,5 +1,6 @@
 package com.personal.tejiendoarte.controller.customer;
 
+import com.personal.tejiendoarte.dto.ProductDetailDto;
 import com.personal.tejiendoarte.dto.ProductDto;
 import com.personal.tejiendoarte.service.customer.CustomerProductService;
 import lombok.RequiredArgsConstructor;
@@ -28,5 +29,10 @@ public class CustomerProductController {
     @GetMapping("/search/{productName}")
     public ResponseEntity<List<ProductDto>> getAllProductsByName(@PathVariable String productName) {
         return ResponseEntity.status(HttpStatus.OK).body(customerProductService.searchProductByTitle(productName));
+    }
+
+    @GetMapping("/product/{productId}")
+    public ResponseEntity<ProductDetailDto> getProductDetailById(@PathVariable Long productId) {
+        return ResponseEntity.status(HttpStatus.OK).body(customerProductService.getProductDetailById(productId));
     }
 }
