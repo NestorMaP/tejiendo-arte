@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
+import java.math.BigDecimal;
+
 @Data
 @AllArgsConstructor
 @Builder
@@ -19,8 +21,8 @@ public class AnalyticsResponseDto {
 
     private Long previousMonthOrders;
 
-    private Long currentMonthEarning;
+    private BigDecimal currentMonthEarnings;
 
-    private Long previousMonthEarning;
+    private BigDecimal previousMonthEarnings;
 
 }
